@@ -59,6 +59,10 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia.")
 
+    def linkingList(self, list1, list2):
+        aux = list1.head
+
+
 
 list = LinkedList()
 
