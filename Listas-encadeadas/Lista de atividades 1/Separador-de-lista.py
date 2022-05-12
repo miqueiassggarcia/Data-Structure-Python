@@ -59,28 +59,29 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia.")
 
-    def linkingList(self, list1, list2):
-        aux = list1.head
-        while(aux.next):
+    def separateList(self, list):
+        aux = list.head
+        size = list.__size
+        print(size//2)
+        for i in range(size//2):
             aux = aux.next
 
-        aux.next = list2
+        aux2 = aux.next
+        aux.next = None
+
+        return [list, aux2]
 
 
-
-list1 = LinkedList()
-list2 = LinkedList()
+list = LinkedList()
 
 for i in range(5):
-    list1.append(randint(0, 100))
-    list2.append(randint(0, 100))
+    list.append(randint(0, 100))
 
-print("Tamanho: " + str(len(list1)))
-print("Tamanho: " + str(len(list2)))
+print("Tamanho: " + str(len(list)))
 
-print("Lista encadeada(" + str(list1) + ")")
-print("Lista encadeada(" + str(list2) + ")")
+print("Lista encadeada(" + str(list) + ")")
 
-list1.linkingList(list1, list2)
+lists = list.separateList(list)
 
-print("Nova lista encadeada(" + str(list1) + ")")
+print("Nova lista encadeada(" + str(lists[0]) + ")")
+print("Nova lista encadeada(" + str(lists[1]) + ")")

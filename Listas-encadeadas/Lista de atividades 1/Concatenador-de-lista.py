@@ -61,26 +61,18 @@ class LinkedList:
 
     def linkingList(self, list1, list2):
         aux = list1.head
-        while(aux.next):
-            aux = aux.next
-
-        aux.next = list2
 
 
 
-list1 = LinkedList()
-list2 = LinkedList()
+list = LinkedList()
 
 for i in range(5):
-    list1.append(randint(0, 100))
-    list2.append(randint(0, 100))
+    list.append(randint(0, 100))
 
-print("Tamanho: " + str(len(list1)))
-print("Tamanho: " + str(len(list2)))
-
-print("Lista encadeada(" + str(list1) + ")")
-print("Lista encadeada(" + str(list2) + ")")
-
-list1.linkingList(list1, list2)
-
-print("Nova lista encadeada(" + str(list1) + ")")
+print("Tamanho: " + str(len(list)))
+print("Lista encadeada(" + str(list) + ")")
+print(list[0])
+print(list[1])
+list[1] = 20
+print(list[1])
+print("Lista encadeada(" + str(list) + ")")
