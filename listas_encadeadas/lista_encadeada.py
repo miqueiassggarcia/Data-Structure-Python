@@ -67,3 +67,7 @@ class LinkedList:
             aux.data = value
         else:
             raise IndexError("Lista vazia.")
+
+    def preencherAleatoriamente(self, quantidade):
+        for i in range(quantidade):
+            self.append(randint(0, 100))

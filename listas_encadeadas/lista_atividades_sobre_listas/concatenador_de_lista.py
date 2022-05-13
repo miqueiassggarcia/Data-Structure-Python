@@ -1,4 +1,3 @@
-from random import randint
 from listas_encadeadas.lista_encadeada import LinkedList
 
 
@@ -14,9 +13,8 @@ def linkingList(list1, list2):
 list1 = LinkedList()
 list2 = LinkedList()
 
-for i in range(4):
-    list1.append(randint(0, 100))
-    list2.append(randint(0, 100))
+list1.preencherAleatoriamente(2)
+list2.preencherAleatoriamente(2)
 
 print("Tamanho: " + str(len(list1)))
 print("Lista encadeada 1(" + str(list1) + ")\n")

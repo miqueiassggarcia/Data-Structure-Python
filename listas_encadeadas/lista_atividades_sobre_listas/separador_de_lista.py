@@ -1,4 +1,3 @@
-from random import randint
 from listas_encadeadas.lista_encadeada import LinkedList
 
 def separateList(list):
@@ -15,8 +14,7 @@ def separateList(list):
 
 list = LinkedList()
 
-for i in range(5):
-    list.append(randint(0, 100))
+list.preencherAleatoriamente(5)
 
 print("Tamanho: " + str(len(list)))
 
