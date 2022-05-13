@@ -71,3 +71,7 @@ class LinkedList:
     def preencherAleatoriamente(self, quantidade):
         for i in range(quantidade):
             self.append(randint(0, 100))
+
+    def preencherEmOrdem(self, quantidade):
+        for i in range(quantidade):
+            self.append(i)
