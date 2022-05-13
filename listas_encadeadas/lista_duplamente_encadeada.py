@@ -2,12 +2,10 @@ from random import randint
 
 
 class Node:
-    def __init__(self, value) -> None:
+    def __init__(self, value, previous) -> None:
         self.data = value
         self.next = None
-
-    def __str__(self):
-        return "[No " + str(self.data) + "] -> " + str(self.next)
+        self.previous = previous
 
 
 class LinkedList:
@@ -21,17 +19,40 @@ class LinkedList:
             while aux.next:
                 aux = aux.next
 
-            aux.next = Node(value)
+            aux.next = Node(value, aux)
         else:
-            self.head = Node(value)
+            self.head = Node(value, None)
 
         self.__size += 1
 
     def __len__(self):
         return self.__size
 
+    def print_inverse(self):
+        output = '['
+        aux = self.head
+        while aux.next:
+            aux = aux.next
+        while aux:
+            if aux.previous:
+                output += str(aux.data) + ", "
+            else:
+                output += str(aux.data)
+            aux = aux.previous
+        output += "]"
+        return output
+
     def __str__(self):
-        return str(self.head)
+        output = '['
+        aux = self.head
+        while aux:
+            if aux.next:
+                output += str(aux.data) + ", "
+            else:
+                output += str(aux.data)
+            aux = aux.next
+        output += "]"
+        return output
 
     def __getitem__(self, index):
         if self.head:
@@ -58,30 +79,3 @@ class LinkedList:
             aux.data = value
         else:
             raise IndexError("Lista vazia.")
-
-    def separateList(self, list):
-        aux = list.head
-        size = list.__size
-        print(size//2)
-        for i in range(size//2):
-            aux = aux.next
-
-        aux2 = aux.next
-        aux.next = None
-
-        return [list, aux2]
-
-
-list = LinkedList()
-
-for i in range(5):
-    list.append(randint(0, 100))
-
-print("Tamanho: " + str(len(list)))
-
-print("Lista encadeada(" + str(list) + ")")
-
-lists = list.separateList(list)
-
-print("Nova lista encadeada(" + str(lists[0]) + ")")
-print("Nova lista encadeada(" + str(lists[1]) + ")")

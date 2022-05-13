@@ -12,18 +12,27 @@ class Node:
 
 class LinkedList:
     def __init__(self) -> None:
-        self.head = None
+        self.__head = None
         self.__size = 0
 
+    def setSize(self, value):
+        self.__size = value
+
+    def getHead(self):
+        return self.__head
+
+    def getSize(self):
+        return self.__size
+
     def append(self, value):
-        if self.head:
-            aux = self.head
+        if self.__head:
+            aux = self.__head
             while aux.next:
                 aux = aux.next
 
             aux.next = Node(value)
         else:
-            self.head = Node(value)
+            self.__head = Node(value)
 
         self.__size += 1
 
@@ -31,11 +40,11 @@ class LinkedList:
         return self.__size
 
     def __str__(self):
-        return str(self.head)
+        return str(self.__head)
 
     def __getitem__(self, index):
-        if self.head:
-            aux = self.head
+        if self.__head:
+            aux = self.__head
             for i in range(index):
                 if aux.next:
                     aux = aux.next
@@ -47,8 +56,8 @@ class LinkedList:
             raise IndexError("Lista vazia.")
 
     def __setitem__(self, index, value):
-        if self.head:
-            aux = self.head
+        if self.__head:
+            aux = self.__head
             for i in range(index):
                 if aux.next:
                     aux = aux.next
@@ -58,21 +67,3 @@ class LinkedList:
             aux.data = value
         else:
             raise IndexError("Lista vazia.")
-
-    def linkingList(self, list1, list2):
-        aux = list1.head
-
-
-
-list = LinkedList()
-
-for i in range(5):
-    list.append(randint(0, 100))
-
-print("Tamanho: " + str(len(list)))
-print("Lista encadeada(" + str(list) + ")")
-print(list[0])
-print(list[1])
-list[1] = 20
-print(list[1])
-print("Lista encadeada(" + str(list) + ")")
