@@ -36,6 +36,32 @@ class LinkedList:
 
         self.__size += 1
 
+    def pop(self, index):
+        if self.__head:
+            if self.__head.data == index:
+                aux = self.__head
+                self.__head = self.__head.next
+                del aux
+            elif self.__head.next.data == index:
+                aux = self.__head.next
+                self.__head = self.__head.next.next
+                del aux
+            else:
+                antepenultimo = self.__head
+                penultimo = self.__head.next
+                ultimo = self.__head.next.next
+
+                find = True
+                while(ultimo and find):
+                    aux = penultimo
+                    penultimo = ultimo
+                    antepenultimo = aux
+                    ultimo = ultimo.next
+                    if penultimo.data == index:
+                        find = False
+
+                del penultimo
+                antepenultimo = ultimo
     def __len__(self):
         return self.__size
 
@@ -43,8 +69,8 @@ class LinkedList:
         return str(self.__head)
 
     def __getitem__(self, index):
-        if self.__head:
-            aux = self.__head
+        if self.getHead():
+            aux = self.getHead()
             for i in range(index):
                 if aux.next:
                     aux = aux.next
@@ -56,8 +82,8 @@ class LinkedList:
             raise IndexError("Lista vazia.")
 
     def __setitem__(self, index, value):
-        if self.__head:
-            aux = self.__head
+        if self.getHead():
+            aux = self.getHead()
             for i in range(index):
                 if aux.next:
                     aux = aux.next
@@ -73,5 +99,34 @@ class LinkedList:
             self.append(randint(0, 100))
 
     def preencherEmOrdem(self, quantidade):
-        for i in range(quantidade):
-            self.append(i)
+        self.preencherAleatoriamente(quantidade)
+        self.quick_sort(0, quantidade - 1)
+
+    def partition(self, start, end):
+        pivot = self[start]
+        low = start + 1
+        high = end
+
+        while True:
+            while low <= high and self[high] >= pivot:
+                high = high - 1
+
+            while low <= high and self[low] <= pivot:
+                low = low + 1
+
+            if low <= high:
+                self[low], self[high] = self[high], self[low]
+            else:
+                break
+
+        self[start], self[high] = self[high], self[start]
+
+        return high
+
+    def quick_sort(self, start, end):
+        if start >= end:
+            return
+
+        p = self.partition(start, end)
+        self.quick_sort(start, p - 1)
+        self.quick_sort(p + 1, end)

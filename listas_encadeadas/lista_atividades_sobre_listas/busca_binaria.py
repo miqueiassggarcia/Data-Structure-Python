@@ -14,7 +14,7 @@ def buscaBinaria(list, ini, fim, value):
         else:
             return buscaBinaria(list, ini, meio - 1, value)
 
-    return -1;
+    return -1
 
 list = LinkedList()
 
