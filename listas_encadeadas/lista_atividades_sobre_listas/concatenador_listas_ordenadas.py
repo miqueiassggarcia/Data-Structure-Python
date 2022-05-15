@@ -12,21 +12,26 @@ def unirListasEncadeadas(list1, list2):
     newList.quick_sort(0, newList.getSize() - 1)
 
     value = None
-    for i in range(newList.getSize()):
-        if value != newList[i]:
-            value = newList[i]
+    aux = newList.getHead()
+    index = 0
+
+    while aux:
+        if value != newList[index]:
+            value = newList[index]
+            aux = aux.next
+            index += 1
         else:
-            newList.pop(i)
-
-
+            newList.pop(value)
+            aux = aux.next
 
     return newList
+
 
 list1 = LinkedList()
 list2 = LinkedList()
 
-list1.preencherEmOrdem(15)
-list2.preencherEmOrdem(2)
+list1.preencherEmOrdem(150)
+list2.preencherEmOrdem(100)
 
 print("Tamanho:", list1.getSize())
 print("Lista 1", list1)

@@ -42,10 +42,12 @@ class LinkedList:
                 aux = self.__head
                 self.__head = self.__head.next
                 del aux
+                self.__size -= 1
             elif self.__head.next.data == index:
                 aux = self.__head.next
-                self.__head = self.__head.next.next
+                self.__head.next = self.__head.next.next
                 del aux
+                self.__size -= 1
             else:
                 antepenultimo = self.__head
                 penultimo = self.__head.next
@@ -61,7 +63,8 @@ class LinkedList:
                         find = False
 
                 del penultimo
-                antepenultimo = ultimo
+                antepenultimo.next = ultimo
+                self.__size -= 1
     def __len__(self):
         return self.__size
 
