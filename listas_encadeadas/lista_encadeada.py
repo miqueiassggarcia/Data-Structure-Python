@@ -65,6 +65,34 @@ class LinkedList:
                 del penultimo
                 antepenultimo.next = ultimo
                 self.__size -= 1
+
+    def seachItem(self, value):
+        aux = self.__head
+
+        exists = False
+
+        while aux and not(exists):
+            if aux.data == value:
+                exists = True
+            aux = aux.next
+
+        return exists
+
+    def buscaBinaria(self, ini, fim, value):
+        if ini <= fim:
+            meio = (ini + fim) // 2
+
+            if self[meio] == value:
+                return meio
+            elif ini == fim:
+                return -1
+            elif value > self[meio]:
+                return self.buscaBinaria(meio + 1, fim, value)
+            else:
+                return self.buscaBinaria(ini, meio - 1, value)
+
+        return -1
+
     def __len__(self):
         return self.__size
 
