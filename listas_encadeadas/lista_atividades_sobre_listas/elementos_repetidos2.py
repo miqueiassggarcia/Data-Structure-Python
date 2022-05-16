@@ -1,24 +1,22 @@
 from listas_encadeadas.lista_encadeada import LinkedList
 
 def valoresRepetidos(list):
-    valoresRepetidos = LinkedList()
+    ocorrencias = {}
     for i in range(list.getSize()):
-        value = list[i]
-        if not(valoresRepetidos.seachItem(value)) and list.seachItem(value):
-            valoresRepetidos.append(value)
+        ocorrencias[list[i]] = ocorrencias.get(list[i], 0) + 1
 
-    return valoresRepetidos
+    return ocorrencias
 
 
 list = LinkedList()
 
-list.preencherAleatoriamente(10)
+list.preencherAleatoriamente(25)
 
 print("Lista completa:", list)
 
 valoresRepetidos = valoresRepetidos(list)
 
-if valoresRepetidos.getHead() == None:
-    print("\nNão há valores repetidos")
-else:
-    print("\nValores que se repetem:", valoresRepetidos)
+print("Valores repetidos: ", end="")
+for key, value in valoresRepetidos.items():
+    if value > 1:
+        print(key, end=" ")
