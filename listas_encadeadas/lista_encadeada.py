@@ -93,6 +93,47 @@ class LinkedList:
 
         return -1
 
+    def removeFirstItem(self):
+        if self.__head:
+            if self.__head.next:
+                aux = self.__head
+                self.__head = aux.next
+                aux.next = None
+                del aux
+            else:
+                del self.__head
+                self.__head = None
+        else:
+            raise IndexError("Lista vazia!")
+
+    def removeLastItem(self):
+        if self.__head:
+            if self.__head.next:
+                aux = self.__head
+                prev = None
+
+                while(aux.next):
+                    prev = aux
+                    aux = aux.next
+
+                prev.next = None
+                del aux
+            else:
+                del self.__head
+                self.__head = None
+        else:
+            raise IndexError("Lista vazia!")
+
+    def printOddNumbers(self):
+        if self.__head:
+            aux = self.__head
+            while(aux):
+                if aux.data % 2 == 0:
+                    print(aux.data, end=" ")
+                aux = aux.next
+        else:
+            raise IndexError("Lista vazia!")
+
     def __len__(self):
         return self.__size
 
