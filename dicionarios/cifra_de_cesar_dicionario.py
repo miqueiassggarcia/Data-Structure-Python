@@ -31,18 +31,21 @@ key = int(input("Digite a rotacao da cifra: "))
 
 splited_string = string.split()
 
-encrypted_string = ''
+encrypted_word = {}
 
 for word in splited_string:
-    encrypted_string += rotate_word(word, key) + " "
+    encrypted_word[word] = rotate_word(word, key)
 
-print(encrypted_string)
+result = ''
 
-splited_string = encrypted_string.split()
+for key, value in encrypted_word.items():
+    result += key + " "
 
-encrypted_string = ''
+print(result)
 
-for word in splited_string:
-    encrypted_string += rotate_word(word, key * (-1)) + " "
+result = '\n'
 
-print(encrypted_string)
+for key, value in encrypted_word.items():
+    result += value + " "
+
+print(result)
