@@ -1,51 +1,31 @@
-def rotacionar_palavra(values, key):
-    alphabet = 'abcdefghijklmnopqrstuvwxyzàáãâéêóôõíúçABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÃÂÉÊÓÕÍÚÇ'
-    new_values = ''
-    for char in values:
-        index = alphabet.find(char)
-        if index == -1:
-            new_values += char
-        else:
-            new_index = index + key
-            new_index = new_index % len(alphabet)
-            new_values += alphabet[new_index]
-    return new_values
+def rotate_word(word, key):
+    new_word = ""
+    for letter in word:
+        letter_tmp = ord(letter) + key
+        if letter_tmp > ord("z"):
+            letter_tmp -= 26
+        elif letter_tmp < ord("a"):
+            letter_tmp += 26
+        new_word += chr(letter_tmp)
+    return new_word
 
+def generate_dictionary(address):
+    file = open(address, "r")
+    list_of_words = file.read().lower().split()
 
-def rotate_word(values, key):
-    alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    new_values = ''
-    for char in values:
-        index = alphabet.find(char)
-        if index == -1:
-            new_values += char
-        else:
-            new_index = index + key
-            new_index = new_index % len(alphabet)
-            new_values += alphabet[new_index]
-    return new_values
+    dictionary = {}
+    for word in list_of_words:
+        dictionary[word] = None
 
+    return dictionary
 
-string = input("Digite uma frase a ser cifrada: ")
-key = int(input("Digite a rotacao da cifra: "))
+def verify_cipher_compatibility(word, dictionary):
+    for i in range(1, 14):
+        encrypt_word = rotate_word(word, i)
+        if encrypt_word in dictionary:
+            print(word, i, encrypt_word)
 
-splited_string = string.split()
+dictionary = generate_dictionary("words.txt")
 
-encrypted_word = {}
-
-for word in splited_string:
-    encrypted_word[word] = rotate_word(word, key)
-
-result = ''
-
-for key, value in encrypted_word.items():
-    result += key + " "
-
-print(result)
-
-result = '\n'
-
-for key, value in encrypted_word.items():
-    result += value + " "
-
-print(result)
+for word in dictionary.keys():
+    verify_cipher_compatibility(word, dictionary)
