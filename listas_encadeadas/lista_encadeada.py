@@ -24,6 +24,38 @@ class LinkedList:
     def getSize(self):
         return self.__size
 
+    def __len__(self):
+        return self.__size
+
+    def __str__(self):
+        return str(self.__head)
+
+    def __getitem__(self, index):
+        if self.__head:
+            aux = self.__head
+            for i in range(index):
+                if aux.next:
+                    aux = aux.next
+                else:
+                    raise IndexError("Posição não existe.")
+
+            return aux.data
+        else:
+            raise IndexError("Lista vazia.")
+
+    def __setitem__(self, index, value):
+        if self.__head:
+            aux = self.__head
+            for i in range(index):
+                if aux.next:
+                    aux = aux.next
+                else:
+                    raise IndexError("Posição não existe.")
+
+            aux.data = value
+        else:
+            raise IndexError("Lista vazia.")
+
     def append(self, value):
         if self.__head:
             aux = self.__head
@@ -52,11 +84,26 @@ class LinkedList:
 
         return [anterior, elemento, posterior]
 
+    def getItemByIndexWithNextAndPrev(self, index):
+        anterior = self.__head
+        elemento = self.__head.next
+        posterior = self.__head.next.next
+
+        for i in range(1, self.__size):
+            if i == index:
+                return [anterior, elemento, posterior]
+            elif posterior:
+                aux = elemento
+                elemento = posterior
+                anterior = aux
+                posterior = posterior.next
+        return -1
+
     def popValue(self, *value):
         if self.__head:
             if len(value) == 0:
                 self.removeLastItem()
-                self.setSize(self.getSize() - 1)
+                self.setSize(self.__size - 1)
 
             elif self.__head.data == value[0]:
                 aux = self.__head
@@ -85,39 +132,57 @@ class LinkedList:
             raise IndexError("Lista vazia!")
 
     def pop(self, *index):
-        if 0 == index[0] or index[0] == 1:
-            aux = self.__head
-            if 0 == index[0]:
-                self.__head = self.__head.next
+        if self.__head:
+            if len(index) == 0:
+                aux = self.__head
+                while aux.next.next:
+                    aux = aux.next
+
+                del aux.next
+                aux.next = None
+            elif 0 == index[0] or index[0] == 1:
+                aux = self.__head
+                if 0 == index[0]:
+                    self.__head = self.__head.next
+                else:
+                    aux = aux.next
+                    self.__head.next = self.__head.next.next
+
+                aux.next = None
+                del aux
+                self.__size -= 1
             else:
-                aux = aux.next
-                self.__head.next = self.__head.next.next
-
-            aux.next = None
-            del aux
-            self.__size -= 1
+                values = self.getItemByIndexWithNextAndPrev(index[0])
+                values[0].next = values[2]
+                values[1].next = None
+                del values[1]
         else:
-            anterior = self.getHead()
-            elemento = self.getHead().next
-            posterior = self.getHead().next.next
-            aux = None
+            raise IndexError("Lista vazia!")
 
-            for i in range(1, self.getSize()):
-                if i == index[0]:
-                    anterior.next = posterior
-                    elemento.next = None
-                    del elemento
-                    return 1
-                elif posterior:
-                    aux = elemento
-                    elemento = posterior
-                    anterior = aux
-                    posterior = posterior.next
-            return -1
+    def insert(self, value, index):
+        if self.__head:
+            if self.__head:
+                newElement = Node(value)
+                if 0 == index:
+                    aux = self.__head
+
+                    self.__head = newElement
+                    newElement.next = aux
+                elif 1 == index:
+                    aux = self.__head.next
+
+                    self.__head.next = newElement
+                    newElement.next = aux
+                else:
+                    values = self.getItemByIndexWithNextAndPrev(index)
+
+                    values[0].next = newElement
+                    newElement.next = values[1]
+        else:
+            raise IndexError("Lista vazia!")
 
     def seachItem(self, value):
         aux = self.__head
-
         exists = False
 
         while aux and not exists:
@@ -173,7 +238,7 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia!")
 
-    def printOddNumbers(self):
+    def printEvenNumbers(self):
         if self.__head:
             aux = self.__head
             while aux:
@@ -183,37 +248,14 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia!")
 
-    def __len__(self):
-        return self.__size
+    def linkingLists(self, list2):
+        aux = self.__head
+        while (aux.next):
+            aux = aux.next
 
-    def __str__(self):
-        return str(self.__head)
-
-    def __getitem__(self, index):
-        if self.getHead():
-            aux = self.getHead()
-            for i in range(index):
-                if aux.next:
-                    aux = aux.next
-                else:
-                    raise IndexError("Posição não existe.")
-
-            return aux.data
-        else:
-            raise IndexError("Lista vazia.")
-
-    def __setitem__(self, index, value):
-        if self.getHead():
-            aux = self.getHead()
-            for i in range(index):
-                if aux.next:
-                    aux = aux.next
-                else:
-                    raise IndexError("Posição não existe.")
-
-            aux.data = value
-        else:
-            raise IndexError("Lista vazia.")
+        aux.next = list2
+        self.setSize(self.__size + list2.__size)
+        del list2
 
     def preencherAleatoriamente(self, quantidade):
         for i in range(quantidade):
@@ -222,6 +264,14 @@ class LinkedList:
     def preencherEmOrdem(self, quantidade):
         self.preencherAleatoriamente(quantidade)
         self.quick_sort(0, quantidade - 1)
+
+    def quick_sort(self, start, end):
+        if start >= end:
+            return
+
+        p = self.partition(start, end)
+        self.quick_sort(start, p - 1)
+        self.quick_sort(p + 1, end)
 
     def partition(self, start, end):
         pivot = self[start]
@@ -243,20 +293,3 @@ class LinkedList:
         self[start], self[high] = self[high], self[start]
 
         return high
-
-    def quick_sort(self, start, end):
-        if start >= end:
-            return
-
-        p = self.partition(start, end)
-        self.quick_sort(start, p - 1)
-        self.quick_sort(p + 1, end)
-
-    def linkingLists(self, list2):
-        aux = self.getHead()
-        while (aux.next):
-            aux = aux.next
-
-        aux.next = list2
-        self.setSize(self.getSize() + list2.getSize())
-        del list2
