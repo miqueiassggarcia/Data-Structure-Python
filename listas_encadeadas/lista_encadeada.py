@@ -38,40 +38,54 @@ class LinkedList:
 
     def pop(self, index):
         if self.__head:
-            if self.__head.data == index:
-                aux = self.__head
-                self.__head = self.__head.next
-                del aux
-                self.__size -= 1
-            elif self.__head.next.data == index:
-                aux = self.__head.next
-                self.__head.next = self.__head.next.next
-                del aux
-                self.__size -= 1
-            else:
-                antepenultimo = self.__head
-                penultimo = self.__head.next
-                ultimo = self.__head.next.next
+            if not index:
+                self.removeLastItem()
 
-                find = True
-                while(ultimo and find):
-                    aux = penultimo
-                    penultimo = ultimo
-                    antepenultimo = aux
-                    ultimo = ultimo.next
-                    if penultimo.data == index:
-                        find = False
+            elif self.__head:
+                if self.__head.data == index:
+                    aux = self.__head
+                    self.__head = self.__head.next
 
-                del penultimo
-                antepenultimo.next = ultimo
-                self.__size -= 1
+                    aux.next = None
+                    del aux
+                    self.__size -= 1
+
+                elif self.__head.next.data == index:
+                    aux = self.__head.next
+                    self.__head.next = self.__head.next.next
+
+                    aux.next = None
+                    del aux
+                    self.__size -= 1
+
+                else:
+                    antepenultimo = self.__head
+                    penultimo = self.__head.next
+                    ultimo = self.__head.next.next
+
+                    value_find = True
+                    while ultimo and value_find:
+                        aux = penultimo
+                        penultimo = ultimo
+                        antepenultimo = aux
+                        ultimo = ultimo.next
+                        if penultimo.data == index:
+                            value_find = False
+
+                    penultimo.next = None
+                    del penultimo
+                    antepenultimo.next = ultimo
+                    self.__size -= 1
+
+        else:
+            raise IndexError("Lista vazia!")
 
     def seachItem(self, value):
         aux = self.__head
 
         exists = False
 
-        while aux and not(exists):
+        while aux and not exists:
             if aux.data == value:
                 exists = True
             aux = aux.next
@@ -112,7 +126,7 @@ class LinkedList:
                 aux = self.__head
                 prev = None
 
-                while(aux.next):
+                while aux.next:
                     prev = aux
                     aux = aux.next
 
@@ -127,7 +141,7 @@ class LinkedList:
     def printOddNumbers(self):
         if self.__head:
             aux = self.__head
-            while(aux):
+            while aux:
                 if aux.data % 2 == 0:
                     print(aux.data, end=" ")
                 aux = aux.next
@@ -202,3 +216,12 @@ class LinkedList:
         p = self.partition(start, end)
         self.quick_sort(start, p - 1)
         self.quick_sort(p + 1, end)
+
+    def linkingLists(self, list2):
+        aux = self.getHead()
+        while (aux.next):
+            aux = aux.next
+
+        aux.next = list2
+        self.setSize(self.getSize() + list2.getSize())
+        del list2
