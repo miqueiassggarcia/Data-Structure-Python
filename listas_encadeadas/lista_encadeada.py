@@ -36,21 +36,21 @@ class LinkedList:
 
         self.__size += 1
 
-    def getItemOfValueWithNextAndPrev(self, value):
-        antepenultimo = self.__head
-        penultimo = self.__head.next
-        ultimo = self.__head.next.next
+    def getItemByValueWithNextAndPrev(self, value):
+        anterior = self.__head
+        elemento = self.__head.next
+        posterior = self.__head.next.next
 
         value_find = True
-        while ultimo and value_find:
-            aux = penultimo
-            penultimo = ultimo
-            antepenultimo = aux
-            ultimo = ultimo.next
-            if penultimo.data == value[0]:
+        while posterior and value_find:
+            aux = elemento
+            elemento = posterior
+            anterior = aux
+            posterior = posterior.next
+            if elemento.data == value[0]:
                 value_find = False
 
-        return [antepenultimo, penultimo, ultimo]
+        return [anterior, elemento, posterior]
 
     def popValue(self, *value):
         if self.__head:
@@ -75,16 +75,45 @@ class LinkedList:
                 self.__size -= 1
 
             else:
-                values = self.getItemOfValueWithNextAndPrev(value)
+                values = self.getItemByValueWithNextAndPrev(value)
 
                 values[0].next = values[2]
                 values[1].next = None
                 del values[1]
                 self.__size -= 1
-
-
         else:
             raise IndexError("Lista vazia!")
+
+    def pop(self, *index):
+        if 0 == index[0] or index[0] == 1:
+            aux = self.__head
+            if 0 == index[0]:
+                self.__head = self.__head.next
+            else:
+                aux = aux.next
+                self.__head.next = self.__head.next.next
+
+            aux.next = None
+            del aux
+            self.__size -= 1
+        else:
+            anterior = self.getHead()
+            elemento = self.getHead().next
+            posterior = self.getHead().next.next
+            aux = None
+
+            for i in range(1, self.getSize()):
+                if i == index[0]:
+                    anterior.next = posterior
+                    elemento.next = None
+                    del elemento
+                    return 1
+                elif posterior:
+                    aux = elemento
+                    elemento = posterior
+                    anterior = aux
+                    posterior = posterior.next
+            return -1
 
     def seachItem(self, value):
         aux = self.__head
