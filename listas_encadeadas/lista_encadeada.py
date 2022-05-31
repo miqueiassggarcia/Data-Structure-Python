@@ -36,46 +36,52 @@ class LinkedList:
 
         self.__size += 1
 
-    def pop(self, index):
+    def getItemOfValueWithNextAndPrev(self, value):
+        antepenultimo = self.__head
+        penultimo = self.__head.next
+        ultimo = self.__head.next.next
+
+        value_find = True
+        while ultimo and value_find:
+            aux = penultimo
+            penultimo = ultimo
+            antepenultimo = aux
+            ultimo = ultimo.next
+            if penultimo.data == value[0]:
+                value_find = False
+
+        return [antepenultimo, penultimo, ultimo]
+
+    def popValue(self, *value):
         if self.__head:
-            if not index:
+            if len(value) == 0:
                 self.removeLastItem()
+                self.setSize(self.getSize() - 1)
 
-            elif self.__head:
-                if self.__head.data == index:
-                    aux = self.__head
-                    self.__head = self.__head.next
+            elif self.__head.data == value[0]:
+                aux = self.__head
+                self.__head = self.__head.next
 
-                    aux.next = None
-                    del aux
-                    self.__size -= 1
+                aux.next = None
+                del aux
+                self.__size -= 1
 
-                elif self.__head.next.data == index:
-                    aux = self.__head.next
-                    self.__head.next = self.__head.next.next
+            elif self.__head.next.data == value[0]:
+                aux = self.__head.next
+                self.__head.next = self.__head.next.next
 
-                    aux.next = None
-                    del aux
-                    self.__size -= 1
+                aux.next = None
+                del aux
+                self.__size -= 1
 
-                else:
-                    antepenultimo = self.__head
-                    penultimo = self.__head.next
-                    ultimo = self.__head.next.next
+            else:
+                values = self.getItemOfValueWithNextAndPrev(value)
 
-                    value_find = True
-                    while ultimo and value_find:
-                        aux = penultimo
-                        penultimo = ultimo
-                        antepenultimo = aux
-                        ultimo = ultimo.next
-                        if penultimo.data == index:
-                            value_find = False
+                values[0].next = values[2]
+                values[1].next = None
+                del values[1]
+                self.__size -= 1
 
-                    penultimo.next = None
-                    del penultimo
-                    antepenultimo.next = ultimo
-                    self.__size -= 1
 
         else:
             raise IndexError("Lista vazia!")

@@ -21,7 +21,7 @@ def unirListasEncadeadas(list1, list2):
             aux = aux.next
             index += 1
         else:
-            newList.pop(value)
+            newList.popValue(value)
             aux = aux.next
 
     return newList
@@ -31,7 +31,7 @@ list1 = LinkedList()
 list2 = LinkedList()
 
 list1.preencherEmOrdem(150)
-list2.preencherEmOrdem(100)
+list2.preencherEmOrdem(150)
 
 print("Tamanho:", list1.getSize())
 print("Lista 1", list1)
