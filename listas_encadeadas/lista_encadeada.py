@@ -238,6 +238,14 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia!")
 
+    def print_partial(self, inicio, fim):
+        string = "["
+        for i in range(inicio+fim-self.__size, self.__size):
+            string += self[i] + ", "
+
+        string += "]"
+        print(string)
+
     def printEvenNumbers(self):
         if self.__head:
             aux = self.__head
@@ -248,7 +256,7 @@ class LinkedList:
         else:
             raise IndexError("Lista vazia!")
 
-    def linkingLists(self, list2):
+    def extend(self, list2):
         aux = self.__head
         while (aux.next):
             aux = aux.next
