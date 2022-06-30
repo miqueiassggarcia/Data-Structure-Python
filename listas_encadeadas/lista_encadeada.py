@@ -68,92 +68,62 @@ class LinkedList:
 
         self.__size += 1
 
-    def getItemByValueWithNextAndPrev(self, value):
+    def getItemByValueWithPrev(self, value):
         anterior = self.__head
         elemento = self.__head.next
-        posterior = self.__head.next.next
 
-        value_find = True
-        while posterior and value_find:
-            aux = elemento
-            elemento = posterior
-            anterior = aux
-            posterior = posterior.next
-            if elemento.data == value[0]:
-                value_find = False
+        while elemento and elemento.data != value:
+            anterior = elemento
+            elemento = elemento.next
+        if elemento:
+            return [anterior, elemento]
+        else:
+            return -1
 
-        return [anterior, elemento, posterior]
+    def getItemByIndexWithPrev(self, index):
+        if index < self.getSize():
+            anterior = self.__head
+            elemento = self.__head.next
 
-    def getItemByIndexWithNextAndPrev(self, index):
-        anterior = self.__head
-        elemento = self.__head.next
-        posterior = self.__head.next.next
-
-        for i in range(1, self.__size):
-            if i == index:
-                return [anterior, elemento, posterior]
-            elif posterior:
-                aux = elemento
-                elemento = posterior
-                anterior = aux
-                posterior = posterior.next
-        return -1
+            for i in range(1, self.__size):
+                if i == index:
+                    return [anterior, elemento]
+                elif elemento:
+                    anterior = elemento
+                    elemento = elemento.next
+            return -1
+        else:
+            raise IndexError("Posição não existe")
 
     def popValue(self, *value):
         if self.__head:
             if len(value) == 0:
                 self.removeLastItem()
-                self.setSize(self.__size - 1)
 
             elif self.__head.data == value[0]:
-                aux = self.__head
-                self.__head = self.__head.next
-
-                aux.next = None
-                del aux
-                self.__size -= 1
-
-            elif self.__head.next.data == value[0]:
-                aux = self.__head.next
-                self.__head.next = self.__head.next.next
-
-                aux.next = None
-                del aux
-                self.__size -= 1
+                self.removeFirstItem()
 
             else:
-                values = self.getItemByValueWithNextAndPrev(value)
-
-                values[0].next = values[2]
-                values[1].next = None
-                del values[1]
-                self.__size -= 1
+                values = self.getItemByValueWithPrev(value[0])
+                if values != -1:
+                    values[0].next = values[1].next
+                    values[1].next = None
+                    del values[1]
+                    self.__size -= 1
         else:
             raise IndexError("Lista vazia!")
 
     def pop(self, *index):
         if self.__head:
             if len(index) == 0:
-                aux = self.__head
-                while aux.next.next:
-                    aux = aux.next
+                self.removeLastItem()
 
-                del aux.next
-                aux.next = None
-            elif 0 == index[0] or index[0] == 1:
-                aux = self.__head
-                if 0 == index[0]:
-                    self.__head = self.__head.next
-                else:
-                    aux = aux.next
-                    self.__head.next = self.__head.next.next
+            elif 0 == index[0]:
+                self.removeFirstItem()
 
-                aux.next = None
-                del aux
-                self.__size -= 1
             else:
-                values = self.getItemByIndexWithNextAndPrev(index[0])
-                values[0].next = values[2]
+                values = self.getItemByIndexWithPrev(index[0])
+                values[0].next = values[1].next
                 values[1].next = None
                 del values[1]
         else:
@@ -174,7 +144,7 @@ class LinkedList:
                     self.__head.next = newElement
                     newElement.next = aux
                 else:
-                    values = self.getItemByIndexWithNextAndPrev(index)
+                    values = self.getItemByIndexWithPrev(index)
 
                     values[0].next = newElement
                     newElement.next = values[1]
@@ -214,9 +184,11 @@ class LinkedList:
                 self.__head = aux.next
                 aux.next = None
                 del aux
+                self.setSize(self.getSize() - 1)
             else:
                 del self.__head
                 self.__head = None
+                self.setSize(self.getSize() - 1)
         else:
             raise IndexError("Lista vazia!")
 
@@ -232,9 +204,11 @@ class LinkedList:
 
                 prev.next = None
                 del aux
+                self.setSize(self.getSize() - 1)
             else:
                 del self.__head
                 self.__head = None
+                self.setSize(self.getSize() - 1)
         else:
             raise IndexError("Lista vazia!")
 
@@ -262,7 +236,7 @@ class LinkedList:
 
     def extend(self, list2):
         aux = self.__head
-        while (aux.next):
+        while aux.next:
             aux = aux.next
 
         aux.next = list2
@@ -305,3 +279,14 @@ class LinkedList:
         self[start], self[high] = self[high], self[start]
 
         return high
+
+    def removeRepeatedValues(self):
+        if self.__head:
+            aux = self.__head
+            value = aux.data
+            while aux.next:
+                aux = aux.next
+                if aux.data == value:
+                    self.popValue(value)
+                else:
+                    value = aux.data

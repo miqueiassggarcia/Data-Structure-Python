@@ -1,5 +1,6 @@
 from listas_encadeadas.lista_encadeada import LinkedList
 
+
 def unirListasEncadeadas(list1, list2):
     newList = LinkedList()
 
@@ -11,34 +12,26 @@ def unirListasEncadeadas(list1, list2):
 
     newList.quick_sort(0, newList.getSize() - 1)
 
-    value = None
-    aux = newList.getHead()
-    index = 0
+    print("Tamanho original:", newList.getSize())
+    print("Nova lista original", newList)
 
-    while aux:
-        if value != newList[index]:
-            value = newList[index]
-            aux = aux.next
-            index += 1
-        else:
-            newList.popValue(value)
-            aux = aux.next
+    newList.removeRepeatedValues()
 
     return newList
 
 
-list1 = LinkedList()
-list2 = LinkedList()
+lista1 = LinkedList()
+lista2 = LinkedList()
 
-list1.preencherEmOrdem(150)
-list2.preencherEmOrdem(150)
+lista1.preencherEmOrdem(150)
+lista2.preencherEmOrdem(150)
 
-print("Tamanho:", list1.getSize())
-print("Lista 1", list1)
-print("Tamanho:", list2.getSize())
-print("Lista 2", list2)
+print("Tamanho:", lista1.getSize())
+print("Lista 1", lista1)
+print("Tamanho:", lista2.getSize())
+print("Lista 2", lista2)
 
-newList = unirListasEncadeadas(list1, list2)
+newList = unirListasEncadeadas(lista1, lista2)
 
 print("\nTamanho:", newList.getSize())
 print("Nova lista", newList)

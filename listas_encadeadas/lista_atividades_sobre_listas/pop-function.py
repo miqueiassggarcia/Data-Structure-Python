@@ -9,3 +9,7 @@ print(list)
 value = list.pop()
 
 print(list)
+
+list.popValue(list[2])
+
+print(list)
