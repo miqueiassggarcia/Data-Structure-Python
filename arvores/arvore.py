@@ -45,20 +45,62 @@ class BSTNode:
         if not self.data:
             return 0
         else:
+            # if self.left:
+            #    left = self.left.total_nodes()
+            # else:
+            #    left = 0
+            # if self.right:
+            #    right = self.right.total_nodes()
+            # else:
+            #    right = 0
+            # return left + right + 1
+
             return (self.left.total_nodes() if self.left else 0) + (self.right.total_nodes() if self.right else 0) + 1
 
     def altura(self):
         if not self.data:
             return -1
         else:
-            esq = self.left.altura() if self.left else -1
-            dir = self.right.altura() if self.right else -1
-            return esq + 1 if esq > dir else dir + 1
+            esquerda = self.left.altura() if self.left else -1
+            direita = self.right.altura() if self.right else -1
+            return esquerda + 1 if esquerda > direita else direita + 1
+
+    def imprimir_graus(self):
+        if self.data:
+            # if self.right and self.left:
+            #    print(self.data, "grau 2")
+            # elif self.right or self.left:
+            #    print(self.data, "grau 1")
+            # else:
+            #    print(self.data, "grau 0")
+            print(self.data,
+                  "grau 2" if self.right and self.left else "grau 1" if self.left or self.right else "grau 0"
+                  )
+            if self.left:
+                self.left.imprimir_graus()
+            if self.right:
+                self.right.imprimir_graus()
+
+    def imprimir_folhas(self):
+        if self.data:
+            if self.left:
+               left = self.left.imprimir_folhas()
+            else:
+                left = 0
+            if self.right:
+               right = self.right.imprimir_folhas()
+            else:
+                right = 0
+            if left + right == 0:
+                folhas = 1
+            else:
+                folhas = 0
+            return folhas + left + right
 
 
 tree = BSTNode()
 
-values = [20, 33, 9, 18, 41, 26, 3, 12, 29, 10, 44]
+values = [20, 33, 9, 18, 41, 26, 3, 12, 29, 10, 44, 45, 42]
 
 for value in values:
     tree.insert(value)
@@ -72,3 +114,8 @@ tree.print_pos()
 
 print('\nTotal de nós:', tree.total_nodes())
 print('Altura:', tree.altura())
+
+print("\nGraus dos nós")
+tree.imprimir_graus()
+
+print("\nQuantidade de folhas", tree.imprimir_folhas())
